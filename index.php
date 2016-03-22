@@ -22,7 +22,7 @@
             // echo json with success = 1
       $response["success"] = 1;
       $response["user"]["fname"] = $user["fullname"];
-      $response["user"]["phone"] = $user["phonenumber"];
+      $response["user"]["phone"] = $user["phone"];
       $response["user"]["email"] = $user["email"];
       $response["user"]["uname"] = $user["username"];
       $response["user"]["uid"] = $user["unique_id"];
@@ -44,7 +44,7 @@
         $salt = $hash["salt"];
         $subject = "Change Password Notification";
         $message = "Hello User,nnYour Password is sucessfully changed.nnRegards,nBhai Madad Chahiye Team.";
-        $from = "contact@bhaimadadchahiye.com";
+        $from = "bhai@bhaimadadchahiye.com";
         $headers = "From:" . $from;
         if ($db->isUserExisted($email)) {
 
@@ -74,14 +74,14 @@
         $salt = $hash["salt"];
         $subject = "Password Recovery";
         $message = "Hello User,nnYour Password is sucessfully changed. Your new Password is $randomcode . Login with your new Password and change it in the User Panel.nnRegards,nBhai Madad Chahiye Team.";
-        $from = "contact@bhaimadadchahiye.com";
+        $from = "bhai@bhaimadadchahiye.com";
         $headers = "From:" . $from;
         if ($db->isUserExisted($forgotpassword)) {
 
          $user = $db->forgotPassword($forgotpassword, $encrypted_password, $salt);
          if ($user) {
            $response["success"] = 1;
-           //mail($forgotpassword,$subject,$message,$headers);
+           mail($forgotpassword,$subject,$message,$headers);
            echo json_encode($response);
          }
          else {
@@ -107,7 +107,7 @@
 
       $subject = "Registration";
       $message = "Hello $fname,nnYou have sucessfully registered to our service.nnRegards,nAdmin.";
-      $from = "contact@bhaimadadchahiye.com";
+      $from = "bhai@bhaimadadchahiye.com";
       $headers = "From:" . $from;
         // check if user is already existed
       if ($db->isUserExisted($email)) {
@@ -133,7 +133,7 @@
           $response["user"]["uname"] = $user["username"];
           $response["user"]["uid"] = $user["unique_id"];
           $response["user"]["created_at"] = $user["created_at"];
-          //mail($email,$subject,$message,$headers);
+          mail($email,$subject,$message,$headers);
           echo json_encode($response);
         } else {
                 // user failed to store

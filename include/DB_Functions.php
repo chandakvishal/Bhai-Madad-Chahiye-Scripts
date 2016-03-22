@@ -15,7 +15,7 @@ class DB_Functions {
   }
     /**
      * Random string which is sent by mail to reset password
-     */
+     */ 
     public function random_string()
     {
       $character_set_array = array();
@@ -93,7 +93,7 @@ public function storeUser($fname, $lname, $email, $uname, $password) {
    $isValid = false;
    $clean_email = filter_var($email,FILTER_SANITIZE_EMAIL);
 
-   if ($email == $clean_email && filter_var($email,FILTER_VALIDATE_EMAIL)){
+   if ($email == $clean_email && filter_var($email,FILTER_VALIDATE_EMAIL)) {
     list($user, $domain) = explode('@', $email);
     $arr= dns_get_record($domain,DNS_MX);
     $arr = $arr + array(null);
