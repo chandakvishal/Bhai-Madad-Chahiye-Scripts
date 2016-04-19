@@ -30,9 +30,8 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         } else {
             // user failed to store
             $response["error"] = 1;
-            $response["error_msg"] = "JSON Error occurred in Registration";
+            $response["error_msg"] = "JSON Error while storing Location";
             echo json_encode($response);
         }
     }
 }
-?>
