@@ -20,10 +20,11 @@ class DB_Functions_Question
     {
     }
 
-    public function postQuestion($email, $questionTags, $questionTitle, $questionBody, $latitude, $longitude)
+    public function postQuestion($email, $questionTags, $questionTitle, $questionBody, $latitude, $longitude, $locality)
     {
-        $quid = uniqid('', true);
-        mysqli_query($this->conn, "INSERT INTO `questions`(email, latitude, longitude, questionTags, questionTitle, questionBody, timestamp, quid) VALUES('$email', '$latitude', '$longitude', '$questionTags', '$questionTitle', '$questionBody', NOW(), '$quid');");
+        $digits = 9;
+        $quid = rand(pow(10, $digits-1), pow(10, $digits)-1);
+        mysqli_query($this->conn, "INSERT INTO `questions`(email, latitude, longitude, questionTags, questionTitle, questionBody, timestamp, quid, locality) VALUES('$email', '$latitude', '$longitude', '$questionTags', '$questionTitle', '$questionBody', NOW(), '$quid', '$locality');");
         $result = mysqli_query($this->conn, "SELECT * FROM `questions` WHERE questionTitle = '$questionTitle'");
         // check for successful store
         if ($result) {
@@ -49,10 +50,10 @@ class DB_Functions_Question
         }
     }
 
-    public function aurDikhao($latitude, $longitude, $timestamp)
+    public function aurDikhao($latitude, $longitude, $timestamp, $locality)
     {
         //TODO: Refine the questions according to the location of the user
-        $result = mysqli_query($this->conn, "SELECT questionTitle FROM `questions` WHERE timestamp > '$timestamp' LIMIT 10");
+        $result = mysqli_query($this->conn, "SELECT questionTitle, questionBody, email FROM `questions` WHERE locality='$locality' AND timestamp > '$timestamp' LIMIT 10");
         if ($result) {
             // return all the answer to the particular question
             return $result;
@@ -66,7 +67,7 @@ class DB_Functions_Question
         $qidResult = mysqli_query($this->conn, "SELECT quid FROM `questions` WHERE questionTitle = '$qTitle'");
         $tempArray = mysqli_fetch_array($qidResult);
         $qid = $tempArray["quid"];
-        mysqli_query($this->conn, "INSERT INTO `answers`(qid, email, answer, timestamp) VALUES ('$qid','$email', '$answer', 'NOW()');");
+        mysqli_query($this->conn, "INSERT INTO `answers`(qid, email, answer, timestamp) VALUES ('$qid','$email', '$answer', NOW());");
         $result = mysqli_query($this->conn, "SELECT * FROM `answers` WHERE qid = '$qid'");
         // check for successful store
         if ($result) {

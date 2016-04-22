@@ -20,10 +20,11 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $questionBody = $_POST['qBody'];
         $latitude = $_POST['latitude'];
         $longitude = $_POST['longitude'];
+        $locality = $_POST["locality"];
+
 
         // post question
-        $user = $db->postQuestion($email, $questionTags, $questionTitle, $questionBody, $latitude, $longitude);
-        echo $user;
+        $user = $db->postQuestion($email, $questionTags, $questionTitle, $questionBody, $latitude, $longitude, $locality);
         if ($user) {
             // user stored successfully
             $response["success"] = 1;
@@ -74,9 +75,10 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $longitude = $_POST['longitude'];
         $timestamp = $_POST['timestamp'];
         $rank = $_POST["offset"];
+        $locality = $_POST["locality"];
 
         // show more questions
-        $result = $db->aurDikhao($latitude, $longitude, $timestamp);
+        $result = $db->aurDikhao($latitude, $longitude, $timestamp, $locality);
         if (mysqli_num_rows($result) > 0) {
             $rows = array();
             while ($row = $result->fetch_assoc()) {
